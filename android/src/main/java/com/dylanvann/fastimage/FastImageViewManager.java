@@ -119,6 +119,7 @@ class FastImageViewManager extends SimpleViewManager<FastImageViewWithUrl> imple
         // This will cancel existing requests.
         if (requestManager != null) {
             requestManager.clear(view);
+            requestManager = null;
         }
 
         if (view.glideUrl != null) {
