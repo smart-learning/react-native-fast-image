@@ -76,6 +76,8 @@ class FastImageViewManager extends SimpleViewManager<FastImageViewWithUrl> imple
         view.glideUrl = glideUrl;
         if (requestManager != null) {
             requestManager.clear(view);
+        } else {
+            requestManager = Glide.with(view.getContext());
         }
 
         String key = glideUrl.toStringUrl();
