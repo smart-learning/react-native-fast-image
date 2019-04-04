@@ -1,9 +1,12 @@
 package com.dylanvann.fastimage;
 
+import static com.dylanvann.fastimage.FastImageRequestListener.REACT_ON_ERROR_EVENT;
+import static com.dylanvann.fastimage.FastImageRequestListener.REACT_ON_LOAD_END_EVENT;
+import static com.dylanvann.fastimage.FastImageRequestListener.REACT_ON_LOAD_EVENT;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.model.GlideUrl;
@@ -15,18 +18,12 @@ import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
-
 import javax.annotation.Nullable;
-
-import static com.dylanvann.fastimage.FastImageRequestListener.REACT_ON_ERROR_EVENT;
-import static com.dylanvann.fastimage.FastImageRequestListener.REACT_ON_LOAD_END_EVENT;
-import static com.dylanvann.fastimage.FastImageRequestListener.REACT_ON_LOAD_EVENT;
 
 class FastImageViewManager extends SimpleViewManager<FastImageViewWithUrl> implements FastImageProgressListener {
 
@@ -77,7 +74,10 @@ class FastImageViewManager extends SimpleViewManager<FastImageViewWithUrl> imple
         if (requestManager != null) {
             requestManager.clear(view);
         } else {
-            requestManager = Glide.with(view.getContext());
+            Context context = view.getContext();
+            if (isValidContextForGlide(context)) {
+                requestManager = Glide.with(context);
+            }
         }
 
         String key = glideUrl.toStringUrl();
